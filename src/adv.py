@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -34,6 +35,20 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+items = {
+    "staff" : Item('staff', 'a powerful magical staff'),
+    "Sword" : Item("sword","the sharpest sword in all of the land "),
+    "Note"  : Item('note', 'a mysterious note dropped in the middle of the floor'),
+    "Skull" : Item("skull", 'the skull of a body that didnt make it out'),
+    "Dagger" : Item("dagger", 'A silver dagger with fresh blood still on it')
+}
+
+room['outside'].add_items(items['staff'])
+room['foyer'].add_items(items['Sword'])
+room['overlook'].add_items(items['Note'])
+room['narrow'].add_items(items['Skull'])
+room['treasure'].add_items(items['Dagger'])
+
 #
 # Main
 #
@@ -56,10 +71,13 @@ new_player = Player('player_1', room['outside'])
 # If the user enters "q", quit the game.
 
 while True:
-    directions = ['n','s','e','w','q','h']
+    directions = ['n','s','e','w','q','h',]
     print(new_player)
+    print(new_player.current_room.print_item())
+
     user_input = input('please enter a command or press h for help:').split(' ')
     print()
+    
 
     if user_input[0] == "q":
         break
@@ -67,12 +85,12 @@ while True:
     if user_input[0] == "h":
         print('Pick a direction n: is for north, s: is for south e: is for east, w: is for west, and q is for quit')
         print()
-    if user_input[0] not in directions:
-         print('I did not understand that understand that')
+    # if user_input[0] not in directions:
+    #      print('I did not understand that understand that')
 
     
-    if len(user_input) < 0:
-        print('I did not understand that ')
+    # if len(user_input) < 0:
+    #     print('I did not understand that ')
 
 
     if user_input[0] == "n":
@@ -105,4 +123,19 @@ while True:
         else:
             print('there is no room in that direction')
             print()
+
+    if user_input[0] == 'get':
+        # new_player.current_room.remove_item(user_input[1])
+        new_player.get_item(user_input[1])
+
+    if user_input[0] == 'drop':
+        new_player.remove_item(user_input[1])
+        new_player.current_room.add_items(user_input[1])
+        
+
+    if user_input[0] == 'i' :
+        new_player.print_item()
+
+        
+
             
